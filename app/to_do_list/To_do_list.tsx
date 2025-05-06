@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, StyleSheet, Text, StatusBar, TextInput, Button, TouchableOpacity} from 'react-native';
+import {View, FlatList, StyleSheet, Text, StatusBar, TextInput, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ItemProps = {
@@ -11,7 +11,6 @@ type ItemProps = {
 
 export default function To_do_list() {
 
-    const [tasksfilter,  setTasksfilter] = useState('');
     const [task, setTask] = useState('');
     const [tasks, setTasks] = useState<ItemProps[]>([]);
 
@@ -80,6 +79,7 @@ export default function To_do_list() {
 
     return (
         <View style={styles.container}>
+            {tasks.length !== 0 ?
             <FlatList
                 data={tasks} // ← pense à afficher les tâches filtrées si tu utilises le filtre
                 renderItem={({ item }) => (
@@ -88,7 +88,12 @@ export default function To_do_list() {
                 keyExtractor={item => item.id.toString()}
                 contentContainerStyle={styles.listContent}
             />
+                :
+                <Text style={styles.emptyMessage}>
+                    Aucune tâche {"n'a"} été ajoutée
+                </Text>
 
+            }
             <View style={styles.saveSection}>
                 <TextInput
                     style={styles.input}
@@ -126,6 +131,13 @@ const styles = StyleSheet.create({
     taskInfo: {
         flex: 1,
         paddingRight: 10,
+    },
+    emptyMessage: {
+        textAlign: 'center',
+        color: '#999',
+        fontSize: 16,
+        fontStyle: 'italic',
+        marginTop: 40,
     },
 
     date: {
